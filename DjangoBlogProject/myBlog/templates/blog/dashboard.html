@@ -1,10 +1,65 @@
 {%extends 'blog/base.html'%}
-{%load static %}
-{% block content %} 
+ {%load static %}
 
-<div class="col-sm-10">
-<h3 class="text-warning  my-3">Dashboard</h3>
+{%block msg%}
+ <h3 class="text-warning my-3">Dashboard</h3>
+ <a class="btn btn-success" href="{%url 'addpost' %}">Add Post</a>
+ <br>
+ {%if messages %} 
+ {%for message in messages %}
+ <p class="alert alert-success my-1">{{message}}</p>
+
+ {%endfor%} 
+ {%endif%} 
+ {%endblock msg%}
+
+
+  {% block side %} 
+   <div class="text-dark text-center">
+      <h5>Profile</h5>
+      <h4>{{fullname}}</h4>
+      <br>
+      {% for group in groups   %}
+      <h3>{{group.name}}</h3>
+      {%endfor%}
+   </div>
+  {%endblock side%}
+
+
+{% block content %}
+<div >
   
+  <table class="table">
+    <thead>
+      <tr class="text-center">
+        <th scope="col">ID</th>
+        <th scope="col" class="text-center">Title</th>
+        <th scope="col" class="text-justify text-wrap">Description</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%for post in posts%}
+      <tr>
+        <th scope="row">{{post.id}}</th>
+        <td>{{post.title}}</td>
+        <td class="text-justified">{{post.desc}}</td>
+        <td class="d-flex justify-content-between">
+          <a
+            class="btn btn-warning btn-sm mx-1"
+            href="{%url 'updatepost' post.id %}"
+            >Edit</a
+          >
+          {% if perms.myBlog.delete_blogpost %}
+          <form action="{%url 'deletepost' post.id %}" method="POST">
+            {%csrf_token%}
+            <button class="btn btn-danger btn-sm">Delete</button>
+          </form>
+          {%endif%}
+        </td>
+      </tr>
+      {%endfor%}
+    </tbody>
+  </table>
 </div>
-
 {%endblock content %}

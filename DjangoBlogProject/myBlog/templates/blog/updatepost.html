@@ -1,0 +1,27 @@
+{%extends 'blog/base.html'%}
+{%load static %}
+{% block content %} 
+<div class="col-sm-10">
+    <h3 class="text-warning  my-3">Update  post</h3>
+    <form action="" method="POST" novalidate>
+        {% csrf_token %} 
+        
+        {%for item in form%} 
+    <div class="form-group">
+      {{item.label_tag}} {{item}}
+
+      <span class="text-danger" value="submit">
+        {{item.errors|striptags}}
+      </span>
+    </div>
+
+    {%endfor%}
+    
+        <button class="btn btn-success m-2 size" value="submit">  Add   </button>
+        <a class="btn btn-danger size" href="{%url 'dashboard' %}" value="submit">Cancel</a>
+    
+       
+      </form>
+{%endblock content %}
+
+

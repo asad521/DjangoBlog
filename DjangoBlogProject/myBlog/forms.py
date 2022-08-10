@@ -2,6 +2,7 @@ from tkinter import Widget
 from django import forms
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm, UsernameField
 from django.contrib.auth.models import User
+from .models import Blogpost
 from django.utils.translation import gettext,gettext_lazy as _
 #  Overriding Inherit UserCreationFrom, OV password and Adding User model  
 class SingupForm(UserCreationForm):
@@ -24,3 +25,12 @@ class SingupForm(UserCreationForm):
 class LoginForm(AuthenticationForm):
     username = UsernameField(widget = forms.TextInput(attrs={'autfocus': True,'class':'form-control'}))
     password = forms.CharField(label=_("Password"),strip=False,widget=forms.PasswordInput(attrs={'class':'form-control','autocomplete':'current-password'}))
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Blogpost
+        fields = ['title','desc']
+        labels = {"desc":"Description","title":"Title"}
+        widgets = {'title':forms.TextInput(attrs={'class':'form-control'}),
+                   'desc':forms.Textarea(attrs={'class':'form-control'})}
+        
